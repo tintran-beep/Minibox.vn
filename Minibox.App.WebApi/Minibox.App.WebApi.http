@@ -1,6 +1,0 @@
-@Minibox.App.WebApi_HostAddress = http://localhost:5117
-
-GET {{Minibox.App.WebApi_HostAddress}}/weatherforecast/
-Accept: application/json
-
-###
