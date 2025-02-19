@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Microsoft.EntityFrameworkCore;
 
 namespace Minibox.Core.Data.Database
 {
-	internal class BaseDbContext
+	public class BaseDbContext(DbContextOptions options) : DbContext(options)
 	{
 	}
 }
