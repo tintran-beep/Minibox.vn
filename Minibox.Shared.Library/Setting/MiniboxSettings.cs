@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Minibox.Shared.Library.Setting
 {
-	public class AppSettings
+	public class MiniboxSettings
 	{
 		public AuthenticationSettings AuthenticationSettings { get; set; } = new AuthenticationSettings();
 		public JwtSettings JwtSettings { get; set; } = new JwtSettings();

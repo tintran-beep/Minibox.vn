@@ -13,14 +13,14 @@ namespace Minibox.Core.Data.Infrastructure.Implementation
 	public class UnitOfWork<TContext> : IUnitOfWork<TContext> where TContext : BaseDbContext
 	{
 		private readonly TContext _dbContext;
-		private readonly AppSettings _appSettings;
+		private readonly MiniboxSettings _appSettings;
 		private readonly Dictionary<Type, object> _repositories;
 
-		public UnitOfWork(TContext dbContext, IOptions<AppSettings> appSettings)
+		public UnitOfWork(TContext dbContext, IOptions<MiniboxSettings> appSettings)
 		{
 			_dbContext = dbContext;
 			_appSettings = appSettings.Value;
-			_repositories = new Dictionary<Type, object>();
+			_repositories = [];
 		}
 
 		/// <summary>
