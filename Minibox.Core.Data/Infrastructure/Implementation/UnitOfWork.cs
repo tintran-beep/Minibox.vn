@@ -10,18 +10,11 @@ using System.Reflection;
 
 namespace Minibox.Core.Data.Infrastructure.Implementation
 {
-	public class UnitOfWork<TContext> : IUnitOfWork<TContext> where TContext : BaseDbContext
+	public class UnitOfWork<TContext>(TContext dbContext, IOptions<MiniboxSettings> appSettings) : IUnitOfWork<TContext> where TContext : BaseDbContext
 	{
-		private readonly TContext _dbContext;
-		private readonly MiniboxSettings _appSettings;
-		private readonly Dictionary<Type, object> _repositories;
-
-		public UnitOfWork(TContext dbContext, IOptions<MiniboxSettings> appSettings)
-		{
-			_dbContext = dbContext;
-			_appSettings = appSettings.Value;
-			_repositories = [];
-		}
+		private readonly TContext _dbContext = dbContext;
+		private readonly MiniboxSettings _appSettings = appSettings.Value;
+		private readonly Dictionary<Type, object> _repositories = [];
 
 		/// <summary>
 		/// Return Repository of type TEntity
