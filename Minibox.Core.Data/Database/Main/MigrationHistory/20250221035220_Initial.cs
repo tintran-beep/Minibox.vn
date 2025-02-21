@@ -80,12 +80,12 @@ namespace Minibox.Core.Data.Database.Main.MigrationHistory
                     ConcurrencyStamp = table.Column<string>(type: "nvarchar(max)", maxLength: 2147483647, nullable: false),
                     TwoFactorEnabled = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
                     AccessFailedCount = table.Column<int>(type: "int", nullable: true),
-                    Status = table.Column<int>(type: "int", nullable: false, defaultValue: 0),
+                    Status = table.Column<int>(type: "int", nullable: false),
                     AvatarId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     DateOfBirth = table.Column<DateTime>(type: "datetime2", nullable: true),
                     LockoutEndDate_Utc = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    CreatedDate_Utc = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(2025, 2, 21, 3, 41, 0, 890, DateTimeKind.Utc).AddTicks(7475)),
-                    ModifiedDate_Utc = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(2025, 2, 21, 3, 41, 0, 890, DateTimeKind.Utc).AddTicks(9899))
+                    CreatedDate_Utc = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ModifiedDate_Utc = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {

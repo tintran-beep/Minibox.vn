@@ -12,7 +12,7 @@ using Minibox.Core.Data.Database.Main;
 namespace Minibox.Core.Data.Database.Main.MigrationHistory
 {
     [DbContext(typeof(MainDbContext))]
-    [Migration("20250221034101_Initial")]
+    [Migration("20250221035220_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -105,9 +105,7 @@ namespace Minibox.Core.Data.Database.Main.MigrationHistory
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("CreatedDate_Utc")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2025, 2, 21, 3, 41, 0, 890, DateTimeKind.Utc).AddTicks(7475));
+                        .HasColumnType("datetime2");
 
                     b.Property<DateTime?>("DateOfBirth")
                         .HasColumnType("datetime2");
@@ -131,9 +129,7 @@ namespace Minibox.Core.Data.Database.Main.MigrationHistory
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime>("ModifiedDate_Utc")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2025, 2, 21, 3, 41, 0, 890, DateTimeKind.Utc).AddTicks(9899));
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("NormalizedEmail")
                         .IsRequired()
@@ -171,9 +167,7 @@ namespace Minibox.Core.Data.Database.Main.MigrationHistory
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Status")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasDefaultValue(0);
+                        .HasColumnType("int");
 
                     b.Property<bool>("TwoFactorEnabled")
                         .ValueGeneratedOnAdd()

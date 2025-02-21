@@ -89,10 +89,10 @@ namespace Minibox.Core.Data.Database.Main.Entity.Auth
 			builder.Property(x => x.ConcurrencyStamp).HasMaxLength(int.MaxValue).IsRequired();
 
 			builder.Property(x => x.TwoFactorEnabled).HasDefaultValue(false).IsRequired();
-			builder.Property(x => x.Status).HasDefaultValue((int)MiniboxEnums.UserStatus.New).IsRequired();
+			builder.Property(x => x.Status).IsRequired();
 
-			builder.Property(x => x.CreatedDate_Utc).HasDefaultValue(DateTime.UtcNow).IsRequired();
-			builder.Property(x => x.ModifiedDate_Utc).HasDefaultValue(DateTime.UtcNow).IsRequired();
+			builder.Property(x => x.CreatedDate_Utc).IsRequired();
+			builder.Property(x => x.ModifiedDate_Utc).IsRequired();
 
 			builder.HasOne(x => x.Avartar).WithMany(x => x.Users).HasForeignKey(x => x.AvatarId).OnDelete(DeleteBehavior.SetNull);
 		}
