@@ -1,2 +1,2 @@
-﻿﻿﻿﻿Add-Migration Initial -Context MainDbContext -OutputDir Database\Main\MigrationHistory
+﻿Add-Migration Initial -Context MainDbContext -OutputDir Database\Main\MigrationHistory -Verbose
 Update-Database -Context MainDbContext
