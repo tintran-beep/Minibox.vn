@@ -14,4 +14,13 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Minibox.Core.Data\Minibox.Core.Data.csproj" />
+    <ProjectReference Include="..\Minibox.Core.Service\Minibox.Core.Service.csproj" />
+    <ProjectReference Include="..\Minibox.Shared.Library\Minibox.Shared.Library.csproj" />
+    <ProjectReference Include="..\Minibox.Shared.Model\Minibox.Shared.Model.csproj" />
+    <ProjectReference Include="..\Minibox.Shared.Module.Logging\Minibox.Shared.Module.Logging.csproj" />
+    <ProjectReference Include="..\Minibox.Shared.Module.Mapping\Minibox.Shared.Module.Mapping.csproj" />
+  </ItemGroup>
+
 </Project>

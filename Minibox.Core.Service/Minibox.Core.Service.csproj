@@ -6,4 +6,12 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Minibox.Core.Data\Minibox.Core.Data.csproj" />
+    <ProjectReference Include="..\Minibox.Shared.Library\Minibox.Shared.Library.csproj" />
+    <ProjectReference Include="..\Minibox.Shared.Model\Minibox.Shared.Model.csproj" />
+    <ProjectReference Include="..\Minibox.Shared.Module.Logging\Minibox.Shared.Module.Logging.csproj" />
+    <ProjectReference Include="..\Minibox.Shared.Module.Mapping\Minibox.Shared.Module.Mapping.csproj" />
+  </ItemGroup>
+
 </Project>
