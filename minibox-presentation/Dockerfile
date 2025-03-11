@@ -8,9 +8,12 @@ COPY minibox-presentation/package.json \
 	 minibox-presentation/package-lock.json \
 	 minibox-presentation/tsconfig*.json \
 	 minibox-presentation/vite.config.ts \
+	 minibox-presentation/index.html \
 	 ./
 
 COPY minibox-presentation/src ./src
+
+RUN ls -l /app/src
 
 RUN npm install
 
