@@ -1,0 +1,30 @@
+
+services:
+  api:
+    container_name: minibox-api
+    build:
+      context: .
+      dockerfile: Minibox.App.Api/Dockerfile
+    ports:
+      - "5000:8080"    # API HTTP
+      - "5001:8081"    # API HTTPS
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    networks:
+      - minibox-network
+
+  presentation-site:
+    container_name: minibox-presentation-site
+    build:
+      context: .
+      dockerfile: minibox-presentation/Dockerfile
+    ports:
+      - "3000:80"
+    depends_on:
+      - api
+    networks:
+      - minibox-network
+
+networks:
+  minibox-network:
+    driver: bridge

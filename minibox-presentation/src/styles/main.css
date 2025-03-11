@@ -1,11 +1,11 @@
-@import "@fontsource/Urbanist"; 
-@import "@fontsource/Roboto";
+@import "@fontsource/urbanist"; 
+@import "@fontsource/roboto";
 @import "tailwindcss";
 
 @theme{
     --font-*: initial;
-    --font-main: "Urbanist", "serif";
-    --font-roboto : "Roboto", "serif";
+    --font-main: "urbanist", "serif";
+    --font-roboto : "roboto", "serif";
 
     --color-primary: #4e7661;
     --color-primary-brightness: #5d8d74;
