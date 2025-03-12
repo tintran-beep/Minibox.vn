@@ -2,7 +2,7 @@
 
 namespace Minibox.Shared.Module.Mapping.Extension
 {
-	public static class MappingExtensions
+	public static class DependencyExtensions
 	{
 		public static IServiceCollection AddMappingModule(this IServiceCollection services)
 		{

@@ -3,6 +3,9 @@ using Minibox.Core.Data.Extension;
 using Minibox.Core.Service.Extension;
 using Minibox.Shared.Module.Mapping.Extension;
 using Minibox.App.Api.Middlewares;
+using Minibox.Core.Data.Database.Main;
+using Minibox.Shared.Module.Logging.Extension;
+using Serilog;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -13,9 +16,11 @@ if (env == "Development")
 else
 	builder.Configuration.AddJsonFile($"appsettings.{env}.json", true, true);
 
-var conStr = builder.Configuration.GetConnectionString("MainDbContext");
+var connectionString = builder.Configuration.GetConnectionString(nameof(MainDbContext)) ?? string.Empty;
 
 builder.Configuration.AddEnvironmentVariables();
+
+builder.ConfigureSerilogLogging(connectionString);
 
 builder.Services.Configure<MiniboxSettings>(builder.Configuration.GetSection(nameof(MiniboxSettings)));
 
@@ -34,6 +39,8 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
+
+app.UseSerilogRequestLogging();
 
 //Auto Migration
 await app.Services.MigrateAsync();
