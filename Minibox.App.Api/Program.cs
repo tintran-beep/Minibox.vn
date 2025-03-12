@@ -2,6 +2,7 @@ using Minibox.Shared.Library.Setting;
 using Minibox.Core.Data.Extension;
 using Minibox.Core.Service.Extension;
 using Minibox.Shared.Module.Mapping.Extension;
+using Minibox.App.Api.Middlewares;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -43,6 +44,8 @@ if (app.Environment.IsDevelopment())
 	app.UseSwagger();
 	app.UseSwaggerUI();
 }
+
+app.UseMiddleware<GlobalExceptionMiddleware>();
 
 app.UseHttpsRedirection();
 

@@ -13,31 +13,15 @@ namespace Minibox.App.Api.Controllers
 		[HttpGet]
 		public async Task<IActionResult> GetAllLanguages()
 		{
-			try
-			{
-				var languages = await _languageService.GetAllSupportedLanguagesAsync();
-				return Ok(languages);
-			}
-			catch (Exception)
-			{
-
-				throw;
-			}
+			var languages = await _languageService.GetAllSupportedLanguagesAsync();
+			return Ok(languages);
 		}
 
 		[HttpGet("{languageCode}")]
 		public async Task<IActionResult> GetLanguagesByCode(string languageCode = "vi")
 		{
-			try
-			{
-				var result = await _languageService.GetLanguagesByCodeAsync(languageCode);
-				return Ok(result);
-			}
-			catch (Exception)
-			{
-
-				throw;
-			}
+			var result = await _languageService.GetLanguagesByCodeAsync(languageCode);
+			return Ok(result);
 		}
 	}
 }
