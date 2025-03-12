@@ -13,6 +13,7 @@ namespace Minibox.Shared.Library.Const
 		public static class DbSchema
 		{
 			public const string Default = "dbo";
+			public const string Language = "lang";
 			public const string Authentication = "auth";
 		}
 

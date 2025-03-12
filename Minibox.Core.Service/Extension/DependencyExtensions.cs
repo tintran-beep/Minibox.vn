@@ -10,7 +10,7 @@ namespace Minibox.Core.Service.Extension
 																										   && x.IsInterface == false
 																										   && x.Name.EndsWith("Service")
 																										   && x.GetInterfaces().Length > 0).ToList();
-			if (implementedServices != null && implementedServices.Any())
+			if (implementedServices != null && implementedServices.Count != 0)
 			{
 				implementedServices.ForEach(assignedTypes =>
 				{

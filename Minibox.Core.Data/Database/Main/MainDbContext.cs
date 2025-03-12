@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Minibox.Core.Data.Database.Main.Entity.Auth;
 using Minibox.Core.Data.Database.Main.Entity.Default;
+using Minibox.Core.Data.Database.Main.Entity.Lang;
 
 namespace Minibox.Core.Data.Database.Main
 {
@@ -15,6 +16,13 @@ namespace Minibox.Core.Data.Database.Main
 		public virtual DbSet<UserLogin> UserLogin { get; set; }
 		public virtual DbSet<UserRole> UserRole { get; set; }
 		public virtual DbSet<UserToken> UserToken { get; set; }
+		#endregion
+
+		#region Lang
+
+		public virtual DbSet<Language> Language { get; set; }
+		public virtual DbSet<LanguageKey> LanguageKey { get; set; }
+		public virtual DbSet<LanguageTranslation> LanguageTranslation { get; set; }
 		#endregion
 
 		#region Default: dbo
@@ -42,6 +50,15 @@ namespace Minibox.Core.Data.Database.Main
 			new UserRoleConfiguration().Configure(builder.Entity<UserRole>());
 
 			new UserTokenConfiguration().Configure(builder.Entity<UserToken>());
+			#endregion
+
+			#region Lang
+
+			new LanguageConfiguration().Configure(builder.Entity<Language>());
+			
+			new LanguageKeyConfiguration().Configure(builder.Entity<LanguageKey>());
+
+			new LanguageTranslationConfiguration().Configure(builder.Entity<LanguageTranslation>());
 			#endregion
 
 			#region Default: dbo
