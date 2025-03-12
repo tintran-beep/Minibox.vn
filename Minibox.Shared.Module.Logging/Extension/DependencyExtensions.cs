@@ -13,7 +13,8 @@ namespace Minibox.Shared.Module.Logging.Extension
 
 			if (env == "Development")
 			{
-				loggerConfig = SerilogConsoleConfig.Configure();
+				//loggerConfig = SerilogConsoleConfig.Configure();
+				loggerConfig = SerilogDatabaseConfig.Configure(connectionString);
 			}
 			else
 			{

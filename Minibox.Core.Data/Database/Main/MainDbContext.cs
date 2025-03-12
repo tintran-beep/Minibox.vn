@@ -5,7 +5,7 @@ using Minibox.Core.Data.Database.Main.Entity.Lang;
 
 namespace Minibox.Core.Data.Database.Main
 {
-	public class MainDbContext(DbContextOptions options) : BaseDbContext(options)
+	public class MainDbContext(DbContextOptions<MainDbContext> options) : BaseDbContext(options)
 	{
 		#region Auth
 		public virtual DbSet<Claim> Claims { get; set; }
@@ -26,6 +26,8 @@ namespace Minibox.Core.Data.Database.Main
 		#endregion
 
 		#region Default: dbo
+
+		public virtual DbSet<Log> Log { get; set; }
 		public virtual DbSet<Media> Media { get; set; }
 		#endregion
 
@@ -62,6 +64,8 @@ namespace Minibox.Core.Data.Database.Main
 			#endregion
 
 			#region Default: dbo
+
+			new LogConfiguration().Configure(builder.Entity<Log>());
 
 			new MediaConfiguration().Configure(builder.Entity<Media>());
 			#endregion

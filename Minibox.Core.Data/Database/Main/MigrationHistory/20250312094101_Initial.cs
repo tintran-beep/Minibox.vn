@@ -15,6 +15,9 @@ namespace Minibox.Core.Data.Database.Main.MigrationHistory
                 name: "auth");
 
             migrationBuilder.EnsureSchema(
+                name: "lang");
+
+            migrationBuilder.EnsureSchema(
                 name: "dbo");
 
             migrationBuilder.CreateTable(
@@ -30,6 +33,54 @@ namespace Minibox.Core.Data.Database.Main.MigrationHistory
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Claim", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Language",
+                schema: "lang",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Code = table.Column<string>(type: "nvarchar(4)", maxLength: 4, nullable: false),
+                    Value = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Language", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "LanguageKey",
+                schema: "lang",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Key = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: false),
+                    DefaultValue = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_LanguageKey", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Log",
+                schema: "dbo",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Timestamp = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Level = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    Message = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Exception = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    StackTrace = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    RequestPath = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
+                    StatusCode = table.Column<int>(type: "int", nullable: true),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Log", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -58,6 +109,28 @@ namespace Minibox.Core.Data.Database.Main.MigrationHistory
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Role", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "LanguageTranslation",
+                schema: "lang",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    LanguageKeyId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Code = table.Column<string>(type: "nvarchar(4)", maxLength: 4, nullable: false),
+                    Value = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_LanguageTranslation", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_LanguageTranslation_LanguageKey_LanguageKeyId",
+                        column: x => x.LanguageKeyId,
+                        principalSchema: "lang",
+                        principalTable: "LanguageKey",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -224,6 +297,18 @@ namespace Minibox.Core.Data.Database.Main.MigrationHistory
                 });
 
             migrationBuilder.CreateIndex(
+                name: "IX_LanguageKey_Key",
+                schema: "lang",
+                table: "LanguageKey",
+                column: "Key");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_LanguageTranslation_LanguageKeyId",
+                schema: "lang",
+                table: "LanguageTranslation",
+                column: "LanguageKeyId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_RoleClaim_ClaimId",
                 schema: "auth",
                 table: "RoleClaim",
@@ -258,6 +343,18 @@ namespace Minibox.Core.Data.Database.Main.MigrationHistory
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "Language",
+                schema: "lang");
+
+            migrationBuilder.DropTable(
+                name: "LanguageTranslation",
+                schema: "lang");
+
+            migrationBuilder.DropTable(
+                name: "Log",
+                schema: "dbo");
+
+            migrationBuilder.DropTable(
                 name: "RoleClaim",
                 schema: "auth");
 
@@ -276,6 +373,10 @@ namespace Minibox.Core.Data.Database.Main.MigrationHistory
             migrationBuilder.DropTable(
                 name: "UserToken",
                 schema: "auth");
+
+            migrationBuilder.DropTable(
+                name: "LanguageKey",
+                schema: "lang");
 
             migrationBuilder.DropTable(
                 name: "Claim",

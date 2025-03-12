@@ -12,7 +12,7 @@ using Minibox.Core.Data.Database.Main;
 namespace Minibox.Core.Data.Database.Main.MigrationHistory
 {
     [DbContext(typeof(MainDbContext))]
-    [Migration("20250221035220_Initial")]
+    [Migration("20250312094101_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -259,6 +259,45 @@ namespace Minibox.Core.Data.Database.Main.MigrationHistory
                     b.ToTable("UserToken", "auth");
                 });
 
+            modelBuilder.Entity("Minibox.Core.Data.Database.Main.Entity.Default.Log", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Exception")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Level")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("Message")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("RequestPath")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<string>("StackTrace")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("StatusCode")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("Timestamp")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Log", "dbo");
+                });
+
             modelBuilder.Entity("Minibox.Core.Data.Database.Main.Entity.Default.Media", b =>
                 {
                     b.Property<Guid>("Id")
@@ -276,6 +315,76 @@ namespace Minibox.Core.Data.Database.Main.MigrationHistory
                     b.HasKey("Id");
 
                     b.ToTable("Media", "dbo");
+                });
+
+            modelBuilder.Entity("Minibox.Core.Data.Database.Main.Entity.Lang.Language", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasMaxLength(4)
+                        .HasColumnType("nvarchar(4)");
+
+                    b.Property<string>("Value")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Language", "lang");
+                });
+
+            modelBuilder.Entity("Minibox.Core.Data.Database.Main.Entity.Lang.LanguageKey", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("DefaultValue")
+                        .IsRequired()
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
+
+                    b.Property<string>("Key")
+                        .IsRequired()
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Key");
+
+                    b.ToTable("LanguageKey", "lang");
+                });
+
+            modelBuilder.Entity("Minibox.Core.Data.Database.Main.Entity.Lang.LanguageTranslation", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasMaxLength(4)
+                        .HasColumnType("nvarchar(4)");
+
+                    b.Property<Guid>("LanguageKeyId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Value")
+                        .IsRequired()
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("LanguageKeyId");
+
+                    b.ToTable("LanguageTranslation", "lang");
                 });
 
             modelBuilder.Entity("Minibox.Core.Data.Database.Main.Entity.Auth.RoleClaim", b =>
@@ -367,6 +476,17 @@ namespace Minibox.Core.Data.Database.Main.MigrationHistory
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("Minibox.Core.Data.Database.Main.Entity.Lang.LanguageTranslation", b =>
+                {
+                    b.HasOne("Minibox.Core.Data.Database.Main.Entity.Lang.LanguageKey", "LanguageKey")
+                        .WithMany("LanguageTranslations")
+                        .HasForeignKey("LanguageKeyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("LanguageKey");
+                });
+
             modelBuilder.Entity("Minibox.Core.Data.Database.Main.Entity.Auth.Claim", b =>
                 {
                     b.Navigation("RoleClaims");
@@ -395,6 +515,11 @@ namespace Minibox.Core.Data.Database.Main.MigrationHistory
             modelBuilder.Entity("Minibox.Core.Data.Database.Main.Entity.Default.Media", b =>
                 {
                     b.Navigation("Users");
+                });
+
+            modelBuilder.Entity("Minibox.Core.Data.Database.Main.Entity.Lang.LanguageKey", b =>
+                {
+                    b.Navigation("LanguageTranslations");
                 });
 #pragma warning restore 612, 618
         }

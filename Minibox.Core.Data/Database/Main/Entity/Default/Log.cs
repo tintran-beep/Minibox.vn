@@ -1,0 +1,38 @@
+﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Microsoft.EntityFrameworkCore;
+using Minibox.Shared.Library.Const;
+using Minibox.Shared.Library.Extension;
+
+namespace Minibox.Core.Data.Database.Main.Entity.Default
+{
+	public class Log
+	{
+		public Guid Id { get; set; } = MiniboxExtensions.SequentialGuidGenerator.Generate();
+		public DateTime Timestamp { get; set; } = DateTime.UtcNow;
+		public string Level { get; set; } = string.Empty;
+		public string Message { get; set; } = string.Empty;
+		public string? Exception { get; set; } = string.Empty;
+		public string? StackTrace { get; set; } = string.Empty;
+		public string? RequestPath { get; set; } = string.Empty;
+		public int? StatusCode { get; set; }
+		public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+	}
+
+	public class LogConfiguration : IEntityTypeConfiguration<Log>
+	{
+		public void Configure(EntityTypeBuilder<Log> builder)
+		{
+			builder.ToTable(nameof(Log), MiniboxConstants.DbSchema.Default);
+
+			builder.HasKey(x => x.Id);
+			builder.Property(x => x.Timestamp).IsRequired();
+			builder.Property(x => x.Level).HasMaxLength(50).IsRequired();
+			builder.Property(x => x.Message).IsRequired();
+			builder.Property(x => x.Exception);
+			builder.Property(x => x.StackTrace);
+			builder.Property(x => x.RequestPath).HasMaxLength(500);
+			builder.Property(x => x.StatusCode);
+			builder.Property(x => x.CreatedAt).IsRequired();
+		}
+	}
+}
