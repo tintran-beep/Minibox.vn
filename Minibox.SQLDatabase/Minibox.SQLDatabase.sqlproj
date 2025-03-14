@@ -3,16 +3,16 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <Name>Minibox.SQLDatabase.MainDbContext</Name>
+    <Name>Minibox.SQLDatabase</Name>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectVersion>4.1</ProjectVersion>
-    <ProjectGuid>{430b7abc-9b54-4daa-905b-79c3a9e0750c}</ProjectGuid>
+    <ProjectGuid>{bd5ab100-d999-47e1-bdb6-d8eb38925f79}</ProjectGuid>
     <DSP>Microsoft.Data.Tools.Schema.Sql.Sql160DatabaseSchemaProvider</DSP>
     <OutputType>Database</OutputType>
     <RootPath>
     </RootPath>
-    <RootNamespace>Minibox.SQLDatabase.MainDbContext</RootNamespace>
-    <AssemblyName>Minibox.SQLDatabase.MainDbContext</AssemblyName>
+    <RootNamespace>Minibox.SQLDatabase</RootNamespace>
+    <AssemblyName>Minibox.SQLDatabase</AssemblyName>
     <ModelCollation>1033, CI</ModelCollation>
     <DefaultFileStructure>BySchemaAndSchemaType</DefaultFileStructure>
     <DeployToDatabase>True</DeployToDatabase>
@@ -56,5 +56,39 @@
   <Import Condition="'$(SQLDBExtensionsRefPath)' == ''" Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\SSDT\Microsoft.Data.Tools.Schema.SqlTasks.targets" />
   <ItemGroup>
     <Folder Include="Properties" />
+    <Folder Include="Schema" />
+    <Folder Include="Data" />
+    <Folder Include="Security" />
+    <Folder Include="Indexes" />
+    <Folder Include="Scripts" />
+    <Folder Include="Schema\dbo" />
+    <Folder Include="Schema\auth" />
+    <Folder Include="Schema\lang" />
+    <Folder Include="Schema\dbo\Tables" />
+    <Folder Include="Schema\auth\Tables" />
+    <Folder Include="Schema\lang\Tables" />
+  </ItemGroup>
+  <ItemGroup>
+    <PreDeploy Include="Scripts\Script.PreDeployment.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <Build Include="Schema\auth\Tables\Claim.sql" />
+    <Build Include="Schema\auth\Tables\Role.sql" />
+    <Build Include="Schema\auth\Tables\RoleClaim.sql" />
+    <Build Include="Schema\auth\Tables\User.sql" />
+    <Build Include="Schema\auth\Tables\UserClaim.sql" />
+    <Build Include="Schema\auth\Tables\UserLogin.sql" />
+    <Build Include="Schema\auth\Tables\UserRole.sql" />
+    <Build Include="Schema\auth\Tables\UserToken.sql" />
+    <Build Include="Schema\dbo\Tables\__EFMigrationsHistory.sql" />
+    <Build Include="Schema\dbo\Tables\Log.sql" />
+    <Build Include="Schema\dbo\Tables\Media.sql" />
+    <Build Include="Schema\lang\Tables\Language.sql" />
+    <Build Include="Schema\lang\Tables\LanguageKey.sql" />
+    <Build Include="Schema\lang\Tables\LanguageTranslation.sql" />
+    <Build Include="Schema\lang\lang.Schema.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <Build Include="Schema\auth\auth.Schema.sql" />
   </ItemGroup>
 </Project>

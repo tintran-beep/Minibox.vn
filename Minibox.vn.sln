@@ -39,12 +39,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Minibox.App.Api", "Minibox.
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SQLDatabase", "SQLDatabase", "{270DE9D5-4649-42D8-BF10-E5A34419EE0E}"
 EndProject
-Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "Minibox.SQLDatabase.MainDbContext", "Minibox.SQLDatabase.MainDbContext\Minibox.SQLDatabase.MainDbContext.sqlproj", "{430B7ABC-9B54-4DAA-905B-79C3A9E0750C}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Action", "Action", "{F2959BEB-1A8D-4B5B-A6F3-ECA3B3A9FB60}"
 	ProjectSection(SolutionItems) = preProject
 		docker-compose.yml = docker-compose.yml
+		docker-guide.txt = docker-guide.txt
 	EndProjectSection
+EndProject
+Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "Minibox.SQLDatabase", "Minibox.SQLDatabase\Minibox.SQLDatabase.sqlproj", "{BD5AB100-D999-47E1-BDB6-D8EB38925F79}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Minibox.SQLDatabase.Deployer", "Minibox.SQLDatabase.Deployer\Minibox.SQLDatabase.Deployer.csproj", "{9D91E452-EB25-4958-9EA4-03E4A3207A57}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -92,12 +95,16 @@ Global
 		{7CD68A4D-178F-424B-BA7D-6941138D9024}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7CD68A4D-178F-424B-BA7D-6941138D9024}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7CD68A4D-178F-424B-BA7D-6941138D9024}.Release|Any CPU.Build.0 = Release|Any CPU
-		{430B7ABC-9B54-4DAA-905B-79C3A9E0750C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{430B7ABC-9B54-4DAA-905B-79C3A9E0750C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{430B7ABC-9B54-4DAA-905B-79C3A9E0750C}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
-		{430B7ABC-9B54-4DAA-905B-79C3A9E0750C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{430B7ABC-9B54-4DAA-905B-79C3A9E0750C}.Release|Any CPU.Build.0 = Release|Any CPU
-		{430B7ABC-9B54-4DAA-905B-79C3A9E0750C}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{BD5AB100-D999-47E1-BDB6-D8EB38925F79}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BD5AB100-D999-47E1-BDB6-D8EB38925F79}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BD5AB100-D999-47E1-BDB6-D8EB38925F79}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{BD5AB100-D999-47E1-BDB6-D8EB38925F79}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BD5AB100-D999-47E1-BDB6-D8EB38925F79}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BD5AB100-D999-47E1-BDB6-D8EB38925F79}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{9D91E452-EB25-4958-9EA4-03E4A3207A57}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9D91E452-EB25-4958-9EA4-03E4A3207A57}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9D91E452-EB25-4958-9EA4-03E4A3207A57}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9D91E452-EB25-4958-9EA4-03E4A3207A57}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -118,7 +125,8 @@ Global
 		{81BBE931-CCEB-4832-8E4A-E9755ADC8755} = {4F34B484-D396-4D0D-A440-DCE9D18D8E4C}
 		{097F0D32-0DF1-40B2-B0B8-90640C210256} = {4F34B484-D396-4D0D-A440-DCE9D18D8E4C}
 		{7CD68A4D-178F-424B-BA7D-6941138D9024} = {B867CA6B-4761-440D-AC55-8F1FC43354BE}
-		{430B7ABC-9B54-4DAA-905B-79C3A9E0750C} = {270DE9D5-4649-42D8-BF10-E5A34419EE0E}
+		{BD5AB100-D999-47E1-BDB6-D8EB38925F79} = {270DE9D5-4649-42D8-BF10-E5A34419EE0E}
+		{9D91E452-EB25-4958-9EA4-03E4A3207A57} = {270DE9D5-4649-42D8-BF10-E5A34419EE0E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {25C64722-F6C5-4FDC-96D1-2BB9288A6477}

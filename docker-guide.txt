@@ -1,0 +1,10 @@
+- Install sqlserver:
+docker pull mcr.microsoft.com/mssql/server:2022-latest
+
+- Create volume to save data
+docker volume create sqlserver_data
+
+- Run sqlserver
+docker run -e "ACCEPT_EULA=Y" -e "SA_PASSWORD=YourStrong!Passw0rd" -p 1433:1433 --name sqlserver -v sqlserver_data:/var/opt/mssql -d mcr.microsoft.com/mssql/server:2022-latest
+
+docker run -e "ACCEPT_EULA=Y" -e "SA_PASSWORD=YourStrong!Passw0rd" -p 1433:1433 --name sqlserver -d mcr.microsoft.com/mssql/server:2022-latest

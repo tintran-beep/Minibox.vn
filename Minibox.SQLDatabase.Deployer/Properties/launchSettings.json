@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "Minibox.SQLDatabase.Deployer": {
+      "commandName": "Project"
+    },
+    "Container (Dockerfile)": {
+      "commandName": "Docker"
+    }
+  }
+}
