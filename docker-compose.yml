@@ -1,30 +1,5 @@
-services:
-  sqlserver:
-    image: mcr.microsoft.com/mssql/server:2022-latest
-    container_name: minibox-sqlserver
-    environment:
-      SA_PASSWORD: "YourStrong!Passw0rd"
-      ACCEPT_EULA: "Y"
-    ports:
-      - "1433:1433"
-    volumes:
-      - sqlserver_data:/var/opt/mssql
-    healthcheck:
-      test: [ "CMD-SHELL", "echo 'SELECT 1' | /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P YourStrong!Passw0rd" ]
-      interval: 10s
-      retries: 5
 
-  minibox-db-deployer:
-    build:
-      context: .
-      dockerfile: Minibox.SQLDatabase.Deployer/Dockerfile
-    depends_on:
-      sqlserver:
-        condition: service_healthy
-    environment:
-      ConnectionStrings__SqlServer: "Server=minibox-sqlserver,1433;Database=Minibox;User Id=sa;Password=YourStrong!Passw0rd;TrustServerCertificate=True"
-    restart: "no"
-
+services:  
   minibox-api:
     container_name: minibox-api
     build:
@@ -35,10 +10,7 @@ services:
       - "5001:8081"
     environment:
       - ASPNETCORE_ENVIRONMENT=Docker
-      - ConnectionStrings__DefaultConnection=Server=minibox-sqlserver,1433;Database=Minibox;User Id=sa;Password=YourStrong!Passw0rd;TrustServerCertificate=True;
-    depends_on:
-      sqlserver:
-        condition: service_healthy
+      - ConnectionStrings__MainDbContext=Server=minibox-database,1433;Database=Minibox;User Id=sa;Password=YourStrong!Passw0rd;TrustServerCertificate=True;
     networks:
       - minibox-network
 
@@ -50,15 +22,10 @@ services:
     ports:
       - "3000:80"
     depends_on:
-      minibox-api:
-        condition: service_healthy
+      - minibox-api
     networks:
       - minibox-network
 
 networks:
   minibox-network:
     driver: bridge
-
-volumes:
-  sqlserver_data:
-    driver: local

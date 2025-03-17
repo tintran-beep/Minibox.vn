@@ -43,7 +43,7 @@ var app = builder.Build();
 app.UseSerilogRequestLogging();
 
 //Auto Migration
-await app.Services.MigrateAsync();
+//await app.Services.MigrateAsync();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

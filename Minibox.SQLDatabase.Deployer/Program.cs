@@ -1,14 +1,15 @@
 ﻿using Microsoft.Extensions.Configuration;
-using System;
 using System.Diagnostics;
-using System.IO;
 
 class Program
 {
 	static void Main()
 	{
-		string solutionDir = Directory.GetParent(AppContext.BaseDirectory)?.Parent?.Parent?.Parent?.Parent?.FullName
-					?? throw new InvalidOperationException("Solution directory could not be determined.");
+		string solutionDir =
+			Environment.GetEnvironmentVariable("SOLUTION_DIR") ??
+			Directory.GetParent(AppContext.BaseDirectory)?.Parent?.Parent?.Parent?.Parent?.FullName ?? 
+			throw new InvalidOperationException("Solution directory could not be determined.");
+
 		string projectPath = Path.Combine(solutionDir, "Minibox.SQLDatabase", "Minibox.SQLDatabase.sqlproj");
 		string outputPath = Path.Combine(solutionDir, "Minibox.Database.Deployer", "output");
 
@@ -64,8 +65,20 @@ class Program
 	static void RunCommand(string command)
 	{
 		Process process = new();
-		process.StartInfo.FileName = "cmd.exe";
-		process.StartInfo.Arguments = $"/C {command}";
+
+		bool isWindows = System.Runtime.InteropServices.RuntimeInformation.IsOSPlatform(System.Runtime.InteropServices.OSPlatform.Windows);
+
+		if (isWindows)
+		{
+			process.StartInfo.FileName = "cmd.exe";
+			process.StartInfo.Arguments = $"/C {command}";
+		}
+		else
+		{
+			process.StartInfo.FileName = "/bin/bash";
+			process.StartInfo.Arguments = $"-c \"{command}\"";
+		}
+
 		process.StartInfo.RedirectStandardOutput = true;
 		process.StartInfo.RedirectStandardError = true;
 		process.StartInfo.UseShellExecute = false;
