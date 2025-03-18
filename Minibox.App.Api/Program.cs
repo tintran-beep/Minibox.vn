@@ -6,6 +6,7 @@ using Minibox.App.Api.Middlewares;
 using Minibox.Core.Data.Database.Main;
 using Minibox.Shared.Module.Logging.Extension;
 using Serilog;
+using Microsoft.Extensions.Options;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -20,30 +21,30 @@ var connectionString = builder.Configuration.GetConnectionString(nameof(MainDbCo
 
 builder.Configuration.AddEnvironmentVariables();
 
-builder.ConfigureSerilogLogging(connectionString);
-
 builder.Services.Configure<MiniboxSettings>(builder.Configuration.GetSection(nameof(MiniboxSettings)));
 
 // Add services to the container.
 builder.Services.AddControllers();
 
-builder.Services
-	.AddMainDbContext(builder.Configuration)
-	.AddDataAccessLayer()
-	.AddBussinessLogicLayer()
-	.AddMappingModule();
-
+builder.Services.AddMainDbContext(builder.Configuration)
+	            .AddDataAccessLayer()
+	            .AddBussinessLogicLayer()
+	            .AddMappingModule()
+	            .AddMinIOStorage();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddHttpContextAccessor();
+
+// Add Serial Logging
+builder.ConfigureSerilogLogging(connectionString);
+
 var app = builder.Build();
 
-app.UseSerilogRequestLogging();
-
-//Auto Migration
-//await app.Services.MigrateAsync();
+//Test log
+Log.Information("Application started successfully!");
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

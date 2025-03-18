@@ -15,6 +15,7 @@ namespace Minibox.Shared.Library.Setting
 		public SmtpSettings SmtpSettings { get; set; } = new SmtpSettings();
 		public ExternalAthenticationSettings FacebookAuthenticationSettings { get; set; } = new ExternalAthenticationSettings();
 		public ExternalAthenticationSettings GoogleAuthenticationSettings { get; set; } = new ExternalAthenticationSettings();
+		public MinIOStorageSettings MinIOStorageSettings { get; set; } = new MinIOStorageSettings();
 	}
 
 	public class AuthenticationSettings
@@ -58,5 +59,14 @@ namespace Minibox.Shared.Library.Setting
 	{
 		public string ClientId { get; set; } = string.Empty;
 		public string ClientSecret { get; set; } = string.Empty;
+	}
+
+	public class MinIOStorageSettings
+	{
+		public string Endpoint { get; set; } = string.Empty;
+		public int Port { get; set; } = 0;
+		public string AccessKey { get; set; } = string.Empty;
+		public string SecretKey { get; set; } = string.Empty;
+		public bool UseSSL { get; set; } = false;
 	}
 }

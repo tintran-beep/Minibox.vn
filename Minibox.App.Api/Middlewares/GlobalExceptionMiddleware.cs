@@ -1,13 +1,13 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Minibox.Shared.Module.Logging.Infrastructure.Interface;
 using System.Net;
-using System.Text.Json;
 
 namespace Minibox.App.Api.Middlewares
 {
-	public class GlobalExceptionMiddleware(RequestDelegate next, ILogger<GlobalExceptionMiddleware> logger)
+	public class GlobalExceptionMiddleware(RequestDelegate next, IMiniboxLogger logger)
 	{
 		private readonly RequestDelegate _next = next;
-		private readonly ILogger<GlobalExceptionMiddleware> _logger = logger;
+		private readonly IMiniboxLogger _logger = logger;
 
 		public async Task Invoke(HttpContext context)
 		{
@@ -17,17 +17,17 @@ namespace Minibox.App.Api.Middlewares
 			}
 			catch (TimeoutException ex)
 			{
-				_logger.LogWarning(ex, "⏳ The request timed out.");
+				_logger.LogError("⏳ The request timed out.", ex);
 				await HandleExceptionAsync(context, HttpStatusCode.GatewayTimeout, "The request timed out. Please try again later.");
 			}
 			catch (DbUpdateException ex)
 			{
-				_logger.LogError(ex, "❌ A database error occurred.");
+				_logger.LogError("❌ A database error occurred.", ex);
 				await HandleExceptionAsync(context, HttpStatusCode.InternalServerError, "A database error occurred while processing your request.");
 			}
 			catch (Exception ex)
 			{
-				_logger.LogError(ex, "⚠️ An unexpected error occurred.");
+				_logger.LogError("⚠️ An unexpected error occurred.", ex);
 				await HandleExceptionAsync(context, HttpStatusCode.InternalServerError, "An unexpected error occurred. Please try again later.");
 			}
 		}

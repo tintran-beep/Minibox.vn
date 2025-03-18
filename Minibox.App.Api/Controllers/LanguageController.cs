@@ -7,10 +7,8 @@ namespace Minibox.App.Api.Controllers
 	[Route("api/[controller]")]
 	[ApiController]
 	public class LanguageController(
-		ILogger<LanguageController> logger,
 		ILanguageService languageService) : ControllerBase
 	{
-		private readonly ILogger<LanguageController> _logger = logger;
 		private readonly ILanguageService _languageService = languageService;
 
 		[HttpGet]

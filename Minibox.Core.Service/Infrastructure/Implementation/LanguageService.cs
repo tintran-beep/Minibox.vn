@@ -7,6 +7,8 @@ using Minibox.Core.Data.Infrastructure.Interface;
 using Minibox.Core.Service.Infrastructure.Interface;
 using Minibox.Shared.Library.Setting;
 using Minibox.Shared.Model.ViewModel;
+using Minibox.Shared.Module.Logging.Infrastructure.Interface;
+using Serilog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,8 +19,10 @@ namespace Minibox.Core.Service.Infrastructure.Implementation
 {
 	public class LanguageService(
 		IMapper mapper,
+		IMiniboxLogger logger,
 		IOptions<MiniboxSettings> appSettings,
-		IUnitOfWork<MainDbContext> mainUnitOfWork) : BaseService(mapper, appSettings, mainUnitOfWork), ILanguageService
+		IUnitOfWork<MainDbContext> mainUnitOfWork) 
+		: BaseService(mapper, logger, appSettings, mainUnitOfWork), ILanguageService
 	{
 		public async Task<List<LanguageVM>> GetAllSupportedLanguagesAsync()
 		{
