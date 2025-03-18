@@ -1,11 +1,11 @@
+- Create network
+docker network create minibox-network
+
 - Install sqlserver:
 docker pull mcr.microsoft.com/mssql/server:2022-latest
 
 - Create volume to save data
 docker volume create sqlserver_data
-
-- Create network
-docker network create minibox-network
 
 - Run sqlserver
 docker run -e "ACCEPT_EULA=Y" -e "SA_PASSWORD=YourStrong!Passw0rd" -p 1433:1433 --name minibox-database -v sqlserver_data:/var/opt/mssql -d mcr.microsoft.com/mssql/server:2022-latest
@@ -13,13 +13,26 @@ docker run -e "ACCEPT_EULA=Y" -e "SA_PASSWORD=YourStrong!Passw0rd" -p 1433:1433 
 - Connect DB to network
 docker network connect minibox-network minibox-database
 
+- Install MinIO
+docker pull minio/minio
+
+- Create volume to save data storage
+docker volume create minio_data
+
+- Run MinIO
+docker run -d --name minibox-minio-storage -p 9000:9000 -p 9001:9001 -v minio_data:/data -e "MINIO_ROOT_USER=admin" -e "MINIO_ROOT_PASSWORD=admin123" minio/minio server /data --console-address ":9001"
+
+- Connect MinIO to network
+docker network connect minibox-network minibox-minio-storage
+
 - Check network
 docker network inspect minibox-network
-
 
 - Connect to a network
 docker network connect minibox-network minibox-api
 
+- Check volume
+docker volume inspect minio_data
 
 --Build and start
 docker compose up --build minibox-api
