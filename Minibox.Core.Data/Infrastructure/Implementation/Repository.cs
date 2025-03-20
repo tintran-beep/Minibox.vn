@@ -82,6 +82,58 @@ namespace Minibox.Core.Data.Infrastructure.Implementation
 			return _dbSet.Where(predicate);
 		}
 
+		#region
+
+		public async Task InsertAsync(TEntity entity)
+		{
+			await _dbSet.AddAsync(entity);
+		}
+
+		public async Task InsertRangeAsync(IEnumerable<TEntity> entities)
+		{
+			await _dbSet.AddRangeAsync(entities);
+		}
+
+		public async Task DeleteByIdAsync(Guid id)
+		{
+			var entity = await _dbSet.FindAsync(id);
+			if (entity != null)
+			{
+				_dbSet.Remove(entity);
+			}
+		}
+
+		public async Task<TEntity?> GetByIdAsync(Guid id)
+		{
+			return await _dbSet.FindAsync(id);
+		}
+
+		public async Task<IEnumerable<TEntity>> GetAllAsync()
+		{
+			return await _dbSet.ToListAsync();
+		}
+
+		public async Task<IEnumerable<TEntity>> FindAsync(Expression<Func<TEntity, bool>> predicate)
+		{
+			return await _dbSet.Where(predicate).ToListAsync();
+		}
+
+		public async Task<TEntity?> FirstOrDefaultAsync(Expression<Func<TEntity, bool>> predicate)
+		{
+			return await _dbSet.FirstOrDefaultAsync(predicate);
+		}
+
+		public async Task<bool> ExistsAsync(Expression<Func<TEntity, bool>> predicate)
+		{
+			return await _dbSet.AnyAsync(predicate);
+		}
+
+		public async Task<int> CountAsync(Expression<Func<TEntity, bool>> predicate)
+		{
+			return await _dbSet.CountAsync(predicate);
+		}
+		#endregion
+
 		#region Implement Dispose Object
 		public virtual void Dispose()
 		{

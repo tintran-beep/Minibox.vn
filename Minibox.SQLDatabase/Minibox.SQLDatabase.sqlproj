@@ -65,13 +65,20 @@
     <Folder Include="Schema\auth" />
     <Folder Include="Schema\lang" />
     <Folder Include="Schema\dbo\Tables" />
-    <Folder Include="Schema\auth\Tables" />
     <Folder Include="Schema\lang\Tables" />
+    <Folder Include="Schema\auth\Tables" />
   </ItemGroup>
   <ItemGroup>
     <PreDeploy Include="Scripts\Script.PreDeployment.sql" />
   </ItemGroup>
   <ItemGroup>
+    <Build Include="Schema\dbo\Tables\__EFMigrationsHistory.sql" />
+    <Build Include="Schema\dbo\Tables\Log.sql" />
+    <Build Include="Schema\lang\Tables\Language.sql" />
+    <Build Include="Schema\lang\Tables\LanguageKey.sql" />
+    <Build Include="Schema\lang\Tables\LanguageTranslation.sql" />
+    <Build Include="Schema\lang\lang.Schema.sql" />
+    <Build Include="Schema\dbo\Tables\MinIOStorageFile.sql" />
     <Build Include="Schema\auth\Tables\Claim.sql" />
     <Build Include="Schema\auth\Tables\Role.sql" />
     <Build Include="Schema\auth\Tables\RoleClaim.sql" />
@@ -80,13 +87,6 @@
     <Build Include="Schema\auth\Tables\UserLogin.sql" />
     <Build Include="Schema\auth\Tables\UserRole.sql" />
     <Build Include="Schema\auth\Tables\UserToken.sql" />
-    <Build Include="Schema\dbo\Tables\__EFMigrationsHistory.sql" />
-    <Build Include="Schema\dbo\Tables\Log.sql" />
-    <Build Include="Schema\dbo\Tables\Media.sql" />
-    <Build Include="Schema\lang\Tables\Language.sql" />
-    <Build Include="Schema\lang\Tables\LanguageKey.sql" />
-    <Build Include="Schema\lang\Tables\LanguageTranslation.sql" />
-    <Build Include="Schema\lang\lang.Schema.sql" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="Schema\auth\auth.Schema.sql" />

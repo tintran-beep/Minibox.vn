@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Minibox.Shared.Model.BaseModel
+namespace Minibox.Shared.Model.ViewModel.BaseVM
 {
-	public class RequestModel<TModel>
+	public class RequestVM<TModel>
 	{
 		public TModel? Data { get; set; }
 	}

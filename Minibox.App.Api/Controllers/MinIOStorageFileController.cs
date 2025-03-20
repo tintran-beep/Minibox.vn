@@ -1,21 +1,23 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Minibox.App.Api.Attributes;
 using Minibox.Core.Service.Infrastructure.Interface;
 
 namespace Minibox.App.Api.Controllers
 {
-	[Route("api/[controller]")]
+	[Authorize]
 	[ApiController]
-	public class MinIOStorageController(
-		IMinioStorageService minioStorageService
-		) : ControllerBase
+	[Route("api/[controller]")]
+	public class MinIOStorageFileController(
+		IMinIOStorageFileService minioStorageFileService) : ControllerBase
 	{
-		private readonly IMinioStorageService _minioStorageService = minioStorageService;
+		private readonly IMinIOStorageFileService _minioStorageFileService = minioStorageFileService;
 
 		[HttpPost("create-bucket/{bucketName}")]
+		[RequireRolesOrClaims(["Admin"], ["ClaimType1/ClaimValue1", "ClaimType2/ClaimValue2"])]
 		public async Task<IActionResult> CreateBucket(string bucketName)
 		{
-			var result = await _minioStorageService.CreateBucketAsync(bucketName);
+			var result = await _minioStorageFileService.CreateBucketAsync(bucketName);
 			if (result)
 				return Ok(new { message = $"Bucket '{bucketName}' created successfully!" });
 
@@ -31,7 +33,7 @@ namespace Minibox.App.Api.Controllers
 			string objectName = $"{Guid.NewGuid()}_{file.FileName}";
 			using var stream = file.OpenReadStream();
 
-			var fileUrl = await _minioStorageService.UploadFileAsync(bucketName, objectName, stream, file.ContentType);
+			var fileUrl = await _minioStorageFileService.UploadFileAsync(bucketName, objectName, stream, file.ContentType);
 			if (fileUrl != null)
 				return Ok(new { message = "File uploaded successfully!", url = fileUrl });
 
@@ -41,7 +43,7 @@ namespace Minibox.App.Api.Controllers
 		[HttpGet("download/{bucketName}/{objectName}")]
 		public async Task<IActionResult> DownloadFile(string bucketName, string objectName)
 		{
-			var (fileStream, contentType) = await _minioStorageService.DownloadFileAsync(bucketName, objectName);
+			var (fileStream, contentType) = await _minioStorageFileService.DownloadFileAsync(bucketName, objectName);
 			if (fileStream == null)
 				return NotFound(new { message = "File not found or download failed." });
 

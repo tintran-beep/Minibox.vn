@@ -1,5 +1,6 @@
 ﻿using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.Extensions.Options;
 using Minibox.Core.Data.Database;
 using Minibox.Core.Data.Extension;
@@ -16,11 +17,7 @@ namespace Minibox.Core.Data.Infrastructure.Implementation
 		private readonly MiniboxSettings _appSettings = appSettings.Value;
 		private readonly Dictionary<Type, object> _repositories = [];
 
-		/// <summary>
-		/// Return Repository of type TEntity
-		/// </summary>
-		/// <typeparam name="TEntity"></typeparam>
-		/// <returns></returns>
+		/// <inheritdoc/>
 		public IRepository<TContext, TEntity> Repository<TEntity>() where TEntity : BaseEntity
 		{
 			var entityType = typeof(TEntity);
@@ -33,12 +30,8 @@ namespace Minibox.Core.Data.Infrastructure.Implementation
 			return (Repository<TContext, TEntity>)_repositories[entityType];
 		}
 
-		/// <summary>
-		/// EF Savechanges
-		/// </summary>
-		/// <param name="cancellationToken"></param>
-		/// <returns></returns>
-		public virtual async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+		/// <inheritdoc/>
+		public virtual async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default, bool isPartOfTransaction = false)
 		{
 			return await MiniboxExtensions.RetryHelper.RetryAsync(async () =>
 			{
@@ -47,6 +40,10 @@ namespace Minibox.Core.Data.Infrastructure.Implementation
 																			|| x.State == EntityState.Modified);
 				if (isSaveChange)
 				{
+					if (isPartOfTransaction)
+					{
+						return await _dbContext.SaveChangesAsync(cancellationToken);
+					}
 					using var transaction = await _dbContext.Database.BeginTransactionAsync(cancellationToken);
 					try
 					{
@@ -67,11 +64,7 @@ namespace Minibox.Core.Data.Infrastructure.Implementation
 			}, TimeSpan.FromSeconds(_appSettings.RetrySettings.RetryIntervalInSeconds), _appSettings.RetrySettings.RetryMaxAttemptCount);
 		}
 
-		/// <summary>
-		/// Bulk action Savechanges
-		/// </summary>
-		/// <param name="cancellationToken"></param>
-		/// <returns></returns>
+		/// <inheritdoc/>
 		public virtual async Task<int> BulkSaveChangesAsync(CancellationToken cancellationToken = default)
 		{
 			return await MiniboxExtensions.RetryHelper.RetryAsync(async () =>
@@ -134,13 +127,25 @@ namespace Minibox.Core.Data.Infrastructure.Implementation
 			}, TimeSpan.FromSeconds(_appSettings.RetrySettings.RetryIntervalInSeconds), _appSettings.RetrySettings.RetryMaxAttemptCount);
 		}
 
-		/// <summary>
-		/// Exec a StoredProcedure
-		/// </summary>
-		/// <typeparam name="TResult"></typeparam>
-		/// <param name="storedProcedureName"></param>
-		/// <param name="parameters"></param>
-		/// <returns></returns>
+		/// <inheritdoc/>
+		public virtual async Task<IDbContextTransaction> BeginTransactionAsync(CancellationToken cancellationToken = default)
+		{
+			return await _dbContext.Database.BeginTransactionAsync(cancellationToken);
+		}
+
+		/// <inheritdoc/>
+		public virtual async Task CommitTransactionAsync()
+		{
+			await _dbContext.Database.CommitTransactionAsync();
+		}
+
+		/// <inheritdoc/>
+		public virtual async Task RollbackTransactionAsync()
+		{
+			await _dbContext.Database.RollbackTransactionAsync();
+		}
+
+		/// <inheritdoc/>
 		public virtual async Task<List<TResult>> ExecStoredProcedureAsync<TResult>(string storedProcedureName, params SqlParameter[] parameters)
 		{
 			using var command = _dbContext.Database.GetDbConnection().CreateCommand();

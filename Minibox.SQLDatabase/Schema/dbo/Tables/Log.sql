@@ -16,3 +16,4 @@
     [CreatedAt]     DATETIME2 (7)    NOT NULL,
     CONSTRAINT [PK_Log] PRIMARY KEY CLUSTERED ([Id] ASC)
 );
+

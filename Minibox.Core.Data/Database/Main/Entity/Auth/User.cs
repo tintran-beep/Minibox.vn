@@ -16,6 +16,7 @@ namespace Minibox.Core.Data.Database.Main.Entity.Auth
 		}
 
 		public Guid Id { get; set; }
+
 		public string Username { get; set; } = string.Empty;
 
 		public string NormalizedUsername { get; set; } = string.Empty;
@@ -36,15 +37,23 @@ namespace Minibox.Core.Data.Database.Main.Entity.Auth
 
 		public string PasswordHash { get; set; } = string.Empty;
 
+		public string SecretKey { get; set; } = string.Empty;
+
 		public string SecurityStamp { get; set; } = string.Empty;
 
 		public string ConcurrencyStamp { get; set; } = string.Empty;
+
+		public string TimeZoneId { get; set; } = string.Empty;
 
 		public bool TwoFactorEnabled { get; set; } = false;
 
 		public int? AccessFailedCount { get; set; }
 
+		public int? VerifyFailedCount { get; set; }
+
 		public int Status { get; set; }
+
+		public string LockedReason { get; set; } = string.Empty;
 
 		public Guid? AvatarId { get; set; }
 
@@ -56,7 +65,7 @@ namespace Minibox.Core.Data.Database.Main.Entity.Auth
 
 		public DateTime ModifiedDate_Utc { get; set; } = DateTime.UtcNow;
 
-		public virtual Media? Avartar { get; set; }
+		public virtual MinIOStorageFile? Avartar { get; set; }
 		public virtual ICollection<UserRole> UserRoles { get; set; } = [];
 		public virtual ICollection<UserClaim> UserClaims { get; set; } = [];
 		public virtual ICollection<UserLogin> UserLogins { get; set; } = [];
@@ -84,12 +93,17 @@ namespace Minibox.Core.Data.Database.Main.Entity.Auth
 			builder.Property(x => x.PhoneNumber).HasMaxLength(15).IsRequired();
 			builder.Property(x => x.PhoneNumberConfirmed).HasDefaultValue(false).IsRequired();
 
+			builder.Property(x => x.SecretKey).HasMaxLength(int.MaxValue).IsRequired();
 			builder.Property(x => x.PasswordHash).HasMaxLength(int.MaxValue).IsRequired();
 			builder.Property(x => x.SecurityStamp).HasMaxLength(int.MaxValue).IsRequired();
 			builder.Property(x => x.ConcurrencyStamp).HasMaxLength(int.MaxValue).IsRequired();
 
+			builder.Property(x => x.TimeZoneId).HasMaxLength(100).IsRequired();
+
 			builder.Property(x => x.TwoFactorEnabled).HasDefaultValue(false).IsRequired();
 			builder.Property(x => x.Status).IsRequired();
+
+			builder.Property(x => x.LockedReason).HasMaxLength(250).IsRequired();
 
 			builder.Property(x => x.CreatedDate_Utc).IsRequired();
 			builder.Property(x => x.ModifiedDate_Utc).IsRequired();

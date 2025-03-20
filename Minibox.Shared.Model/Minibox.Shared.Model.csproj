@@ -6,4 +6,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Minibox.Shared.Library\Minibox.Shared.Library.csproj" />
+  </ItemGroup>
+
 </Project>

@@ -28,7 +28,7 @@ namespace Minibox.Core.Data.Database.Main
 		#region Default: dbo
 
 		public virtual DbSet<Log> Log { get; set; }
-		public virtual DbSet<Media> Media { get; set; }
+		public virtual DbSet<MinIOStorageFile> MinIOStorageFile { get; set; }
 		#endregion
 
 		protected override void OnModelCreating(ModelBuilder builder)
@@ -67,7 +67,7 @@ namespace Minibox.Core.Data.Database.Main
 
 			new LogConfiguration().Configure(builder.Entity<Log>());
 
-			new MediaConfiguration().Configure(builder.Entity<Media>());
+			new MinIOStorageFileConfiguration().Configure(builder.Entity<MinIOStorageFile>());
 			#endregion
 		}
 	}

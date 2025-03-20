@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Security.Cryptography;
+using Minibox.Shared.Library.Const;
 
 namespace Minibox.Shared.Library.Extension
 {
@@ -57,6 +58,39 @@ namespace Minibox.Shared.Library.Extension
 					}
 				}
 				throw new AggregateException(exceptions);
+			}
+		}
+	
+		public static class DateTimeHelper
+		{
+			public static DateTime? ConvertFromUtc(DateTime? utcDate, string timeZoneId = MiniboxConstants.DefaultTimeZoneId)
+			{
+				if (!utcDate.HasValue)
+				{
+					return null;
+				}
+
+				if (utcDate.Value.Kind != DateTimeKind.Utc)
+				{
+					throw new ArgumentException("Input date must be in UTC.", nameof(utcDate));
+				}
+
+				try
+				{
+					if (string.IsNullOrWhiteSpace(timeZoneId))
+						timeZoneId = MiniboxConstants.DefaultTimeZoneId;
+
+					TimeZoneInfo timeZone = TimeZoneInfo.FindSystemTimeZoneById(timeZoneId);
+					return TimeZoneInfo.ConvertTimeFromUtc(utcDate.Value, timeZone);
+				}
+				catch (TimeZoneNotFoundException)
+				{
+					throw new ArgumentException($"Invalid TimeZone ID: {timeZoneId}", nameof(timeZoneId));
+				}
+				catch (InvalidTimeZoneException)
+				{
+					throw new ArgumentException($"Corrupt TimeZone data for ID: {timeZoneId}", nameof(timeZoneId));
+				}
 			}
 		}
 	}

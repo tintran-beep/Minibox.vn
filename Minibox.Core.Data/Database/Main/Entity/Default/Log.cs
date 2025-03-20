@@ -5,7 +5,7 @@ using Minibox.Shared.Library.Extension;
 
 namespace Minibox.Core.Data.Database.Main.Entity.Default
 {
-	public class Log
+	public class Log : BaseEntity
 	{
 		public Guid Id { get; set; } = MiniboxExtensions.SequentialGuidGenerator.Generate();
 		public DateTime Timestamp { get; set; } = DateTime.UtcNow;
