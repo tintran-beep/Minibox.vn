@@ -14,11 +14,5 @@ namespace Minibox.Shared.Library.Enum
 			Active = 1,
 			InActive = 2
 		}
-
-		public enum MediaType : int
-		{
-			Image = 0,
-			Video = 1,
-		}
 	}
 }
