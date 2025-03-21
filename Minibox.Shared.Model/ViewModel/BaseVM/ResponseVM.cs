@@ -31,5 +31,10 @@ namespace Minibox.Shared.Model.ViewModel.BaseVM
 		{
 			return new ResponseVM<T>(false, message, default);
 		}
+
+		public static ResponseVM<T> Failure(T data, string message)
+		{
+			return new ResponseVM<T>(false, message, data);
+		}
 	}
 }

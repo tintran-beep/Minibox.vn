@@ -117,9 +117,9 @@ namespace Minibox.Core.Service.Infrastructure.Implementation
 					case MiniboxEnums.UserStatus.Active:
 						// Check Two-Factor Authentication (2FA)
 						var response = await HandleTwoFactorAuthentication(user);
-						_mainUnitOfWork.Repository<User>().Update(user);
-						await _mainUnitOfWork.SaveChangesAsync(isPartOfTransaction: true);
-						await _mainUnitOfWork.CommitTransactionAsync();
+
+						await HandleActiveUser(user);
+
 						return response;
 
 					case MiniboxEnums.UserStatus.InActive:
@@ -127,12 +127,14 @@ namespace Minibox.Core.Service.Infrastructure.Implementation
 							throw new Exception($"{user.LockedReason}");
 
 						// Unlock the account
-						user.Status = (int)MiniboxEnums.UserStatus.Active;
+						await HandleActiveUser(user);
+
 						goto case MiniboxEnums.UserStatus.Active;
 
 					case MiniboxEnums.UserStatus.New:
 						// Activate the account
-						user.Status = (int)MiniboxEnums.UserStatus.Active;
+						await HandleActiveUser(user);
+
 						goto case MiniboxEnums.UserStatus.Active;
 
 					default:
@@ -202,12 +204,39 @@ namespace Minibox.Core.Service.Infrastructure.Implementation
 
 				if (string.IsNullOrWhiteSpace(user.SecretKey))
 					throw new Exception($"User {model.Username} does not have SecretKey");
-
+								
 				var totp = new Totp(Base32Encoding.ToBytes(user.SecretKey));
 				var isValid = totp.VerifyTotp(model.OtpCode, out long _);
 
 				if (!isValid)
-					throw new Exception($"OTP {model.OtpCode} incorrect!");
+				{
+					if (user.VerifyFailedCount >= _appSettings.AuthenticationSettings.MaxActivationFailedCount)
+					{
+						user.VerifyFailedCount = 0;
+						user.Status = (int)MiniboxEnums.UserStatus.InActive;
+						user.LockoutEndDate_Utc = DateTime.UtcNow.AddDays(_appSettings.AuthenticationSettings.NumberOfDaysLocked);
+
+						var lockedEndDate = MiniboxExtensions.DateTimeHelper.ConvertFromUtc(user.LockoutEndDate_Utc, user.TimeZoneId)?.ToString("dd/mm/yyyy HH:mm:ss") ?? string.Empty;
+
+						user.LockedReason = $"User is locked until {lockedEndDate} due to failed verify OTP attempts!";
+
+						_mainUnitOfWork.Repository<User>().Update(user);
+						await _mainUnitOfWork.SaveChangesAsync();
+
+						return ResponseVM<UserVerifiedOtpVM>.Failure(new UserVerifiedOtpVM()
+						{
+							Status = user.Status
+						}, user.LockedReason);
+					}
+					else
+					{
+						user.VerifyFailedCount++;
+						_mainUnitOfWork.Repository<User>().Update(user);
+						await _mainUnitOfWork.SaveChangesAsync();
+
+						throw new Exception($"OTP {model.OtpCode} incorrect!");
+					}
+				}				
 
 				var userRoles = await GetAllRolesByUserId(user.Id);
 				var userClaims = await GetAllClaimsByUserId(user.Id);
@@ -216,6 +245,7 @@ namespace Minibox.Core.Service.Infrastructure.Implementation
 				return ResponseVM<UserVerifiedOtpVM>.Success(new UserVerifiedOtpVM()
 				{
 					Id = user.Id,
+					Status = user.Status,
 					Username = user.Username,
 					Fullname = user.Fullname,
 					AccessToken = accessToken,
@@ -314,6 +344,19 @@ namespace Minibox.Core.Service.Infrastructure.Implementation
 				Roles = _mapper.Map<List<RoleVM>>(userRoles),
 				Claims = _mapper.Map<List<ClaimVM>>(userClaims),
 			});
+		}
+
+		private async Task HandleActiveUser(User user)
+		{
+			user.Status = (int)MiniboxEnums.UserStatus.Active;
+			user.AccessFailedCount = 0;
+			user.VerifyFailedCount = 0;
+			user.LockoutEndDate_Utc = null;
+			user.LockedReason = string.Empty;
+
+			_mainUnitOfWork.Repository<User>().Update(user);
+			await _mainUnitOfWork.SaveChangesAsync(isPartOfTransaction: true);
+			await _mainUnitOfWork.CommitTransactionAsync();
 		}
 
 		private string GenerateToken(User user, List<Role> roles, List<Claim> claims)

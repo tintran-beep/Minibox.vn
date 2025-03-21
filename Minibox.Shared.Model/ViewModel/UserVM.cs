@@ -52,7 +52,7 @@ namespace Minibox.Shared.Model.ViewModel
 
 	public class UserVerifiedOtpVM : UserSignedInVM
 	{
-		
+		public int Status { get; set; }
 	}
 
 	public class UserSignUpVM

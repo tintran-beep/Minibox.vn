@@ -67,6 +67,19 @@ namespace Minibox.App.Api.Controllers
 			return Ok(response);
 		}
 
+		/// <summary>
+		/// Verifies the One-Time Password (OTP) for admin login.
+		/// </summary>
+		/// <param name="model">The OTP verification request containing the username and OTP code.</param>
+		/// <returns>
+		/// Returns a success response if the OTP is valid, otherwise returns an error response.
+		/// </returns>
+		[HttpPost("admin/verify-otp")]
+		public async Task<IActionResult> AdminVerifyOtpAsync([FromBody] UserVerifyOtpVM model)
+		{
+			var response = await _authenticateService.VerifyOtpAsync(model);			
+			return Ok(response);
+		}
 
 		/// <summary>
 		/// Sign out a user.
